@@ -8,7 +8,9 @@ function getJSON(url) {
         var data = JSON.parse(request.responseText);
         resolve(data);
       } else {
-        reject(this.statusText, this.status, this.responseText)
+        reject({statusText: this.statusText,
+                status: this.status,
+                responseText: this.responseText})
       }
     };
 
@@ -20,11 +22,11 @@ function getJSON(url) {
   });
 }
 
-var getRequests = Promise.all([
-  getJSON("/three_second_route"),
-  getJSON("/five_second_route"),
-  getJSON("/eight_second_route"),
-  getJSON("/random_delay_route")
-  ]).then(function(values) {
-    console.log(values);
-  });
+// var getRequests = Promise.all([
+//   getJSON("/three_second_route"),
+//   getJSON("/five_second_route"),
+//   getJSON("/eight_second_route"),
+//   getJSON("/random_delay_route")
+//   ]).then(function(values) {
+//     console.log(values);
+//   });

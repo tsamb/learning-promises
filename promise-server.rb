@@ -3,7 +3,7 @@ require 'json'
 enable :sessions
 
 before do
-  response['Access-Control-Allow-Origin'] = 'myfancybackendserver.com'
+  response['Access-Control-Allow-Origin'] = 'http://code.jquery.com'
 end
 
 get '/' do
@@ -17,6 +17,8 @@ end
 
 get '/three_second_route' do
   sleep 3
+  status 404
+  return "sorry not found"
   return {emoji: "smiley face", time: 3}.to_json
 end
 
