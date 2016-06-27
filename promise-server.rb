@@ -1,6 +1,11 @@
 require 'sinatra'
 require 'json'
-enable :sessions
+require 'securerandom'
+
+configure do
+  enable :sessions
+  set :session_secret, SecureRandom.base64 
+end
 
 before do
   response['Access-Control-Allow-Origin'] = 'http://code.jquery.com'
@@ -8,6 +13,24 @@ end
 
 get '/' do
   File.read(File.join('public', 'index.html'))
+end
+
+get '/double_the_data' do
+  sleep 3
+  if params[:num]
+    return (params[:num].to_i * 2).to_s
+  else
+    return 400
+  end
+end
+
+get '/sqrt' do
+  sleep 2
+  if params[:num]
+    return Math.sqrt(params[:num].to_i).to_s
+  else
+    return 400
+  end
 end
 
 get '/five_second_route' do
@@ -36,11 +59,15 @@ end
 get '/login' do
   if params[:username] == "sam" && params[:password] == "password"
     session[:logged_in] == true
+    return "logged in"
+  else
+    return "login failed"
   end
 end
 
 get '/logout' do
   session.clear
+  redirect '/'
 end
 
 get '/empty_bank_account' do
